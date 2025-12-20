@@ -1,0 +1,170 @@
+📌 Phase 1 – Planning & Design
+1️⃣ Define Scope of Laws to Include
+
+Clearly decide which Indian laws the system will cover in the first version to avoid scope creep.
+
+Initial Law Coverage (Phase-1)
+
+Indian Penal Code (IPC) – crimes, offenses, punishments
+
+Code of Criminal Procedure (CrPC) – arrest, FIR, investigation, trial process
+
+Code of Civil Procedure (CPC) – civil cases, procedures
+
+Indian Evidence Act – admissibility and relevance of evidence
+
+Scope Decisions
+
+Focus only on central (Union) laws
+
+Exclude:
+
+State-specific amendments
+
+Case-law interpretations (for now)
+
+Recent ordinances (can be added later)
+
+✔️ Goal: Ensure accuracy over completeness in the first version.
+
+2️⃣ Decide Response Boundaries (Information vs Advice)
+
+This is a critical legal and ethical design decision.
+
+What the System CAN Do
+
+Explain:
+
+Legal sections in simple language
+
+Legal procedures (e.g., how FIR works)
+
+Rights and obligations under law
+
+Provide:
+
+Section numbers
+
+Act names
+
+General legal definitions
+
+What the System MUST NOT Do
+
+Give legal advice (e.g., “You should file a case”)
+
+Predict court outcomes
+
+Suggest punishments or strategies
+
+Replace a lawyer’s opinion
+
+Boundary Enforcement Strategy
+
+Use strict prompt instructions
+
+Add mandatory disclaimer in every response:
+
+“This information is for educational purposes only and does not constitute legal advice.”
+
+✔️ Goal: Keep the system informational, not advisory.
+
+3️⃣ Choose LLM Approach (Fine-Tuning vs Prompt-Based)
+
+Decide how the language model will be adapted for Indian legal knowledge.
+
+Option A: Prompt-Based Only
+
+Use a general LLM
+
+Inject law text via prompt
+
+Faster to build
+
+❌ Higher hallucination risk
+
+Option B: Fine-Tuned LLM (Recommended)
+
+Fine-tune on:
+
+Indian legal Q&A
+
+Section explanations
+
+Benefits:
+
+Better legal language understanding
+
+Consistent tone
+
+Reduced hallucinations
+
+Use lightweight fine-tuning (LoRA)
+
+Final Decision (Phase-1)
+
+✔️ Hybrid Approach
+
+Fine-tuned LLM
+
+Combined with retrieval (RAG) for grounding
+
+✔️ Goal: Balance accuracy, compute limits, and reliability.
+
+4️⃣ Choose Retrieval Method (RAG)
+
+To ensure answers are factually grounded, retrieval is mandatory.
+
+Why RAG is Needed
+
+LLMs may:
+
+Fabricate section numbers
+
+Mix up acts
+
+Legal systems require source-backed answers
+
+Retrieval Design
+
+Store:
+
+Bare Act sections
+
+Cleaned legal text chunks
+
+Convert text into:
+
+Vector embeddings
+
+On user query:
+
+Retrieve relevant law sections
+
+Inject them into the model context
+
+Generate answer only from retrieved text
+
+Tools (Design-Level)
+
+Vector database: FAISS / similar
+
+Chunk size: 300–500 tokens
+
+Top-k retrieval: 3–5 sections
+
+✔️ Goal: Zero hallucination, source-grounded responses.
+
+✅ Phase-1 Outcome
+
+By the end of Planning & Design, you will have:
+
+Clearly defined legal scope
+
+Strict response boundaries
+
+Chosen LLM strategy
+
+Decided retrieval architecture
+
+This ensures smooth execution in Phase-2 (Data + Model setup).

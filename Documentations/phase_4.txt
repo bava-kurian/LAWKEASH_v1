@@ -1,0 +1,190 @@
+📌 Phase 4 – Retrieval System
+1️⃣ Generate Embeddings for Law Chunks
+
+You will convert each Phase 2 legal chunk into a dense vector that captures semantic meaning.
+
+🔹 What gets embedded?
+
+Each chunk:
+
+{
+  "text": "Whoever cheats and thereby dishonestly induces...",
+  "metadata": {
+    "act": "Indian Penal Code",
+    "section": "420",
+    "year": 1860,
+    "chunk_id": "IPC_420_01"
+  }
+}
+
+🔹 Embedding Model Choices
+
+Recommended (legal-friendly, high accuracy):
+
+OpenAI text-embedding models
+
+Sentence Transformers (e.g., all-MiniLM, legal-bert variants)
+
+Domain-adapted transformers (if available)
+
+⚠️ Rule:
+
+Same model must be used for:
+
+Document embeddings
+
+Query embeddings
+
+2️⃣ Store Embeddings in a Vector Database
+
+You now need fast similarity search over thousands of legal chunks.
+
+🔹 Popular Vector Databases
+
+FAISS – local, fast, research-friendly
+
+Pinecone – scalable, managed
+
+Chroma – simple, RAG-focused
+
+Weaviate – hybrid search
+
+🔹 What to store per record
+{
+  "id": "IPC_420_01",
+  "embedding": [0.0123, -0.9821, ...],
+  "metadata": {
+    "act": "Indian Penal Code",
+    "section": "420",
+    "title": "Cheating and dishonestly inducing delivery of property"
+  }
+}
+
+
+Metadata is critical for:
+
+Filtering (Act-wise search)
+
+Citations
+
+Explainability
+
+3️⃣ Implement Similarity Search
+
+This is where user queries meet the law.
+
+🔹 Query Flow
+
+User asks:
+
+“What is the punishment for cheating?”
+
+Convert query → embedding
+
+Perform Top-K similarity search
+
+Retrieve most relevant chunks
+
+Pass them to LLM as context
+
+🔹 Similarity Metrics
+
+Cosine similarity ✅ (most common)
+
+Dot product
+
+L2 distance
+
+Recommended:
+
+Top-k = 3–5 chunks
+
+🔹 Example Retrieval Result
+[
+  {
+    "chunk_id": "IPC_420_01",
+    "score": 0.91,
+    "act": "Indian Penal Code",
+    "section": "420"
+  }
+]
+
+4️⃣ Add Filters (Very Important for Legal Accuracy)
+
+Before or after similarity search, apply metadata filters.
+
+🔹 Examples
+
+Search only IPC:
+
+{"act": "Indian Penal Code"}
+
+
+Search only punishment-related sections
+
+Restrict by year / act name
+
+This prevents:
+❌ Mixing IPC with IT Act
+❌ Wrong act citations
+
+5️⃣ Test Retrieval Accuracy
+
+This determines whether your system is trustworthy.
+
+🔹 Evaluation Dataset
+
+Create ~50–100 benchmark queries:
+
+{
+  "query": "Punishment for criminal breach of trust",
+  "expected_section": "406 IPC"
+}
+
+🔹 Metrics to Track
+Metric	Meaning
+Recall@K	Correct section appears in top-K
+Precision@K	Retrieved chunks are relevant
+MRR	Rank quality of correct answer
+Hit Rate	At least one correct chunk found
+
+Target:
+
+Recall@5 ≥ 90%
+
+MRR ≥ 0.8 (excellent for legal QA)
+
+🔹 Manual Validation (Mandatory)
+
+Check:
+
+Wrong act retrieved?
+
+Adjacent section confusion?
+
+Definition vs punishment mismatch?
+
+Example failure:
+
+Query asks punishment → definition retrieved ❌
+
+6️⃣ Reduce Retrieval Errors (Optimization)
+
+If accuracy is low:
+
+✅ Improve chunking (Phase 2)
+✅ Increase chunk overlap
+✅ Add section titles to text
+✅ Use hybrid search (BM25 + vector)
+✅ Re-embed with better model
+
+🧠 Output of Phase 4
+
+At the end of this phase, you have:
+
+✅ Vectorized legal corpus
+✅ Fast semantic search
+✅ Accurate section retrieval
+✅ Citation-ready context for LLM
+
+This is the foundation of your legal AI system.

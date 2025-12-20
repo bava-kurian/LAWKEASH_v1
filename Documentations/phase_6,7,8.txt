@@ -1,0 +1,253 @@
+Phase 6 – Safety Layer (Legal Guardrails)
+
+This phase controls model behavior, not intelligence.
+
+1️⃣ Add System Prompt Constraints (Non-Negotiable)
+
+This is the root authority over the model.
+
+🔹 Mandatory System Prompt Rules
+
+Your system prompt must enforce:
+
+Answer only from retrieved legal context
+
+Always cite Act + Section
+
+Never give legal advice or opinions
+
+No assumptions or hypotheticals
+
+Refuse if information is missing
+
+🔹 Example System Prompt (Core)
+You are a legal information assistant for Indian laws.
+You must answer strictly based on the provided legal text.
+Always cite the relevant Act and Section.
+Do not provide legal advice, opinions, or interpretations.
+If the answer is not present in the context, say you do not know.
+
+2️⃣ Block Advisory & Opinion-Based Language
+🔹 Disallowed Phrases (Hard Block)
+
+“You should…”
+
+“I recommend…”
+
+“In my opinion…”
+
+“Best option is…”
+
+“The accused is guilty…”
+
+🔹 Allowed Neutral Language
+
+“According to Section…”
+
+“The Act states…”
+
+“The punishment prescribed is…”
+
+👉 Implement regex / keyword filters post-generation to catch leaks.
+
+3️⃣ Add Legal Disclaimer (Mandatory for Deployment)
+🔹 One-Time UI Disclaimer
+
+This system provides legal information based on Indian statutes.
+It does not provide legal advice or replace consultation with a qualified legal professional.
+
+🔹 Inline Disclaimer (Optional for long answers)
+
+Append for sensitive queries (criminal / punishment-related)
+
+4️⃣ Handle Unknown & Unsafe Questions Gracefully
+🔹 When to Refuse
+
+Case-specific questions
+
+Hypothetical judgments
+
+Missing legal basis
+
+Opinion-based queries
+
+🔹 Safe Refusal Template
+The requested information is not available in the provided legal text.
+This system can only provide information based on statutory provisions.
+
+
+❌ Never hallucinate
+❌ Never guess sections
+
+🧠 Output of Phase 6
+
+✅ Hallucination-resistant model
+✅ Legal-safe responses
+✅ Deterministic refusals
+✅ Courtroom-safe wording
+
+📌 Phase 7 – Application Layer (Engineering)
+
+This phase makes it usable.
+
+1️⃣ Build Chat UI
+🔹 Recommended Stack
+
+Frontend: React / Next.js
+
+Clean, distraction-free legal UI
+
+🔹 UI Must Include
+
+Chat interface
+
+“Sources” section (Act + Section)
+
+Disclaimer footer
+
+Clear “This is not legal advice” banner
+
+2️⃣ Connect Backend Pipeline (RAG Flow)
+🔹 Backend Stack
+
+API layer: FastAPI
+
+Vector DB (from Phase 4)
+
+Fine-tuned model + LoRA (Phase 5)
+
+🔹 End-to-End Flow
+User Query
+ → Safety Pre-check
+ → Embedding
+ → Vector Search
+ → Context Injection
+ → LLM Generation
+ → Safety Post-check
+ → Response + Citations
+
+3️⃣ Add Logging & Error Handling
+🔹 Log Everything (Anonymized)
+
+User query
+
+Retrieved sections
+
+Model output
+
+Refusals
+
+Errors
+
+🔹 Why This Matters
+
+Debug hallucinations
+
+Improve retrieval
+
+Legal audit trail
+
+Compliance readiness
+
+4️⃣ Test End-to-End Flow
+
+Test with:
+
+Clean questions
+
+Ambiguous questions
+
+Invalid questions
+
+No-context questions
+
+Expected behavior:
+
+Either correct citation
+
+Or safe refusal
+
+🧠 Output of Phase 7
+
+✅ Fully wired legal chatbot
+✅ Traceable answers
+✅ Logged decisions
+✅ Production-ready pipeline
+
+📌 Phase 8 – Testing & Validation (Trust Phase)
+
+This phase determines real-world reliability.
+
+1️⃣ Test Common Citizen Questions
+
+Examples:
+
+“What is the punishment for theft?”
+
+“Which section deals with cheating?”
+
+“Define criminal intimidation”
+
+Expected:
+
+Correct section
+
+Correct punishment
+
+Clear explanation
+
+Neutral tone
+
+2️⃣ Test Edge Cases (Critical)
+🔹 Edge Case Types
+
+Vague queries (“fraud punishment”)
+
+Multi-section overlap
+
+Similar sections (IPC 415 vs 420)
+
+Wrong act confusion
+
+🔹 Expected Behavior
+
+Ask for clarification OR
+
+Return closest valid section with citation
+
+3️⃣ Verify Zero Hallucination (Hard Requirement)
+🔹 Checklist
+
+❌ No fake sections
+
+❌ No invented punishments
+
+❌ No judicial commentary
+
+❌ No guessing
+
+If unsure → must refuse
+
+4️⃣ Improve Explanation Quality (Without Adding Opinion)
+
+Enhance:
+
+Sentence clarity
+
+Structured answers
+
+Bullet-point punishments
+
+Simpler language
+
+❌ Do NOT simplify meaning
+❌ Do NOT summarize away legal conditions
+
+🧠 Final Output (System Ready)
+
+By the end of Phase 8, you have:
+
+✅ End-to-end Indian Legal AI system
+✅ Zero-advice, zero-hallucination design
+✅ Fully auditable responses
+✅ Court-safe, citizen-friendly explanations

@@ -1,0 +1,81 @@
+TODO List (What needs to be done)
+
+📌 Phase 1 – Planning & Design
+
+ Define scope of laws to include (IPC, CrPC, etc.)
+
+ Decide response boundaries (info vs advice)
+
+ Choose LLM approach (fine-tune vs prompt-based)
+
+ Choose retrieval method (RAG)
+
+📌 Phase 2 – Data Preparation
+
+ Collect Indian Bare Acts (open-source)
+
+ Clean and normalize legal text
+
+ Split laws into semantic chunks
+
+ Label chunks with Act + Section
+
+📌 Phase 3 – Dataset Creation
+
+ Create legal Q&A instruction dataset
+
+ Convert data into instruction–response format
+
+ Validate correctness of answers
+
+ Remove ambiguous or opinion-based questions
+
+📌 Phase 4 – Retrieval System
+
+ Generate embeddings for law chunks
+
+ Store embeddings in vector database
+
+ Implement similarity search
+
+ Test retrieval accuracy
+
+📌 Phase 5 – Model Training
+
+ Select base LLM
+
+ Apply LoRA fine-tuning
+
+ Train on Indian legal instructions
+
+ Evaluate output clarity and correctness
+
+📌 Phase 6 – Safety Layer
+
+ Add system prompt constraints
+
+ Block advisory language
+
+ Add legal disclaimer
+
+ Handle unknown questions safely
+
+📌 Phase 7 – Application Layer
+
+ Build chat UI
+
+ Connect backend pipeline
+
+ Add logging and error handling
+
+ Test end-to-end flow
+
+📌 Phase 8 – Testing & Validation
+
+ Test common citizen questions
+
+ Test edge cases
+
+ Verify zero hallucination
+
+ Improve explanation quality

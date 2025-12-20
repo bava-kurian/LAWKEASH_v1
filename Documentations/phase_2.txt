@@ -1,0 +1,164 @@
+📌 Phase 2 – Data Preparation (Detailed)
+1️⃣ Collect Indian Bare Acts (Open-Source)
+
+Sources (legal & free):
+
+Government portals (e.g., Ministry of Law & Justice)
+
+Open legal repositories (India Code, Legal PDFs)
+
+Public GitHub datasets (law text archives)
+
+Formats you’ll encounter:
+
+PDF (scanned / text-based)
+
+HTML
+
+DOC / TXT
+
+Best practice:
+
+Prefer HTML/TXT over scanned PDFs
+
+Maintain a master metadata file:
+
+{
+  "act_name": "Indian Penal Code",
+  "year": 1860,
+  "source": "India Code",
+  "format": "HTML"
+}
+
+2️⃣ Clean and Normalize Legal Text
+
+Legal text is noisy. Cleaning is critical for embeddings & retrieval.
+
+🔹 Remove Noise
+
+Headers & footers
+
+Page numbers
+
+“As amended by Act XX of YYYY”
+
+Excess whitespace & line breaks
+
+🔹 Normalize Text
+
+Convert to UTF-8
+
+Lowercase (optional – depends on tokenizer)
+
+Standardize symbols:
+
+Section— → Section
+
+: ; – → consistent punctuation
+
+🔹 Preserve Legal Structure
+
+❌ Don’t remove:
+
+Section numbers
+
+Sub-clauses (a), (b), (i)
+
+Definitions (“means”, “includes”)
+
+✅ Example cleaned text:
+
+Section 420 Cheating and dishonestly inducing delivery of property.
+Whoever cheats and thereby dishonestly induces the person deceived to deliver any property...
+
+3️⃣ Split Laws into Semantic Chunks
+
+This is not line-based splitting — it’s meaning-based.
+
+🔹 Chunking Strategy (Recommended)
+
+Primary unit: Section
+
+Secondary split: Long sections → paragraphs / clauses
+
+🔹 Ideal Chunk Size
+
+300–700 tokens per chunk
+
+Avoid breaking:
+
+Definitions mid-sentence
+
+Exceptions (Provided that...)
+
+Illustrations
+
+🔹 Example Chunk
+Act: Indian Penal Code, 1860
+Section: 420
+Chunk:
+Whoever cheats and thereby dishonestly induces the person deceived to deliver any property to any person...
+
+4️⃣ Label Chunks with Act + Section (Very Important)
+
+Every chunk must be traceable back to law.
+
+🔹 Metadata Schema (Must-Have)
+{
+  "act": "Indian Penal Code",
+  "year": 1860,
+  "section": "420",
+  "title": "Cheating and dishonestly inducing delivery of property",
+  "chunk_id": "IPC_420_01",
+  "text": "Whoever cheats and thereby dishonestly induces..."
+}
+
+🔹 Why This Matters
+
+Enables legal citations
+
+Helps explainability (“According to Section 420 IPC…”)
+
+Improves RAG accuracy
+
+Required for courtroom / compliance use cases
+
+5️⃣ Validation & Quality Check
+
+Before moving to embeddings:
+
+✅ Checklist:
+
+No missing section numbers
+
+No mixed acts inside one chunk
+
+Chunk size within limits
+
+Metadata completeness
+
+Legal meaning preserved
+
+Optional:
+
+Run NER to detect:
+
+Acts
+
+Sections
+
+Legal terms
+
+Manual sampling review (5–10%)
+
+🧠 Output of Phase 2
+
+At the end of this phase, you should have:
+
+📂 Cleaned legal corpus
+
+📄 Structured JSON chunks
+
+🏷 Fully labeled legal text
+
+🔍 Ready for embedding + vector DB

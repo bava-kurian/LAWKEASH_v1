@@ -1,0 +1,170 @@
+📌 Phase 5 – Model Training
+1️⃣ Select Base LLM (Foundation Model)
+
+Your base model must already be strong in language + reasoning, so fine-tuning only teaches Indian legal behavior, not grammar.
+
+🔹 Recommended Base Models
+
+LLaMA 2 (7B / 13B)
+
+Mistral 7B
+
+Mixtral 8x7B (if resources allow)
+
+Phi-2 (lightweight experiments)
+
+🔹 Selection Criteria
+Criterion	Why it matters
+Open weights	Required for LoRA
+Strong instruction following	Legal answers need structure
+Context length	Law sections can be long
+Hardware fit	7B works on single GPU
+
+👉 Best balance: Mistral 7B or LLaMA 2 7B
+
+2️⃣ Apply LoRA Fine-Tuning (Efficient & Safe)
+
+Instead of full fine-tuning, you inject legal knowledge via adapters.
+
+🔹 Why LoRA is Mandatory
+
+💾 100× fewer parameters
+
+🧠 Prevents catastrophic forgetting
+
+⚖️ Easier rollback if outputs degrade
+
+🔐 Safer for legal domain
+
+🔹 What LoRA Learns
+
+✅ Legal phrasing
+✅ Section referencing behavior
+✅ Answer structure
+❌ Does NOT rewrite base knowledge
+
+🔹 LoRA Configuration (Recommended)
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - v_proj
+
+
+Frameworks:
+
+Hugging Face Transformers
+
+PEFT
+
+3️⃣ Train on Indian Legal Instruction Dataset
+
+This uses your Phase 3 dataset.
+
+🔹 Training Data Format (Strict)
+{
+  "instruction": "What is the punishment for cheating under IPC?",
+  "input": "",
+  "response": "As per Section 420 of the Indian Penal Code, cheating and dishonestly inducing delivery of property is punishable with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine."
+}
+
+🔹 Training Rules (Non-Negotiable)
+
+✅ Always mention:
+
+Act name
+
+Section number
+
+❌ Never generate:
+
+Opinions
+
+Case outcomes
+
+Judicial interpretations
+
+🔹 Hyperparameters (Safe Defaults)
+Parameter	Value
+Epochs	2–3
+Batch size	2–4
+LR	2e-4
+Optimizer	AdamW
+Precision	fp16 / bf16
+
+⚠️ Over-training = hallucination risk
+
+4️⃣ Add Legal Guardrails During Training
+🔹 Response Pattern Reinforcement
+
+Teach the model to always respond like this:
+
+According to Section ___ of the ___ Act, ...
+
+🔹 Refusal Training (Optional but Powerful)
+
+Add examples like:
+
+Instruction:
+
+Is Section 498A misused?
+
+Response:
+
+This question is opinion-based. The Indian Penal Code only defines the legal provisions under Section 498A and does not assess misuse.
+
+This makes your model legally conservative.
+
+5️⃣ Evaluate Output Clarity & Correctness
+
+This phase is more important than loss values.
+
+🔹 Automatic Evaluation
+
+Check:
+
+Section hallucination ❌
+
+Wrong punishment ❌
+
+Missing act name ❌
+
+Over-verbosity ❌
+
+Metrics:
+
+Exact section match
+
+Answer grounding score
+
+Token overlap with source
+
+🔹 Manual Legal Evaluation (Mandatory)
+
+Sample ~50 outputs and verify:
+
+Check	Pass?
+Correct section	✅
+Correct punishment	✅
+Neutral tone	✅
+No assumptions	✅
+Clear language	✅
+🔹 Good vs Bad Output
+
+❌ Bad
+
+Cheating usually leads to jail depending on circumstances.
+
+✅ Good
+
+According to Section 420 of the Indian Penal Code, cheating and dishonestly inducing delivery of property is punishable with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine.
+
+🧠 Output of Phase 5
+
+By the end of this phase, you have:
+
+✅ India-law instruction-tuned LLM
+✅ Minimal hallucinations
+✅ Deterministic, citation-ready answers
+✅ LoRA adapters (portable & safe)

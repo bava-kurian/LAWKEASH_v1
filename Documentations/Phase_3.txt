@@ -1,0 +1,167 @@
+📌 Phase 3 – Dataset Creation
+1️⃣ Create Legal Q&A Instruction Dataset
+
+Your goal is to teach the model how to answer legal questions using Bare Acts, not to give opinions.
+
+🔹 Types of Questions to Include (High Quality)
+
+✅ Fact-based
+
+What is the punishment under Section 420 IPC?
+
+Define “cheating” as per IPC.
+
+✅ Section lookup
+
+Which section deals with criminal breach of trust?
+
+Under which section is theft defined?
+
+✅ Conditional legal queries
+
+What happens if a public servant commits criminal misconduct?
+
+Is cheating punishable with imprisonment?
+
+✅ Explanation-based (strictly textual)
+
+Explain Section 107 IPC.
+
+What does “abetment” mean under IPC?
+
+❌ Exclude
+
+“Is this fair?”
+
+“Is this law good or bad?”
+
+“Should this person be punished?”
+
+Hypothetical courtroom judgments
+
+2️⃣ Convert Data into Instruction–Response Format
+
+This is instruction tuning, not plain Q&A.
+
+🔹 Recommended Format (Instruction Dataset)
+{
+  "instruction": "What is the punishment for cheating under Indian Penal Code?",
+  "input": "",
+  "response": "As per Section 420 of the Indian Penal Code, cheating and dishonestly inducing delivery of property is punishable with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine."
+}
+
+🔹 With Context (Optional but Powerful)
+{
+  "instruction": "Explain Section 107 IPC.",
+  "input": "Indian Penal Code, 1860",
+  "response": "Section 107 of the Indian Penal Code defines abetment. A person abets the doing of a thing if he instigates any person to do that thing, engages in a conspiracy for doing that thing, or intentionally aids by any act or illegal omission."
+}
+
+3️⃣ Ground Answers Strictly in Law Text
+
+This is non-negotiable for legal AI.
+
+🔹 Answer Rules
+
+✅ Answers must:
+
+Quote or paraphrase only Bare Act content
+
+Mention Section number explicitly
+
+Avoid assumptions or interpretations
+
+Use neutral legal language
+
+❌ Avoid:
+
+“In most cases…”
+
+“Courts usually think…”
+
+“It depends on the judge…”
+
+🔹 Good Response Pattern
+According to Section ___ of the ___ Act, ...
+
+4️⃣ Validate Correctness of Answers
+🔹 Validation Pipeline (Recommended)
+
+Step 1: Automated Checks
+
+Section number exists
+
+Act name matches section
+
+No hallucinated punishments
+
+Length within limits
+
+Step 2: Text Match Validation
+
+Response must be traceable to:
+
+Same Act
+
+Same Section
+
+≥ 90% semantic similarity with source text
+
+Step 3: Manual Sampling
+
+Review 5–10% randomly
+
+Check:
+
+Legal correctness
+
+Missing clauses
+
+Wrong penalties
+
+5️⃣ Remove Ambiguous or Opinion-Based Questions
+
+Legal datasets must be deterministic.
+
+🔹 Examples to Remove
+
+❌ “Is Section 498A misused?”
+❌ “Was IPC written fairly?”
+❌ “Is life imprisonment justified?”
+❌ “Who is guilty in this case?”
+
+🔹 Replace With
+
+✅ “What does Section 498A IPC state?”
+✅ “What is the punishment under Section 498A?”
+✅ “Define cruelty as per IPC.”
+
+6️⃣ Balance & Coverage
+
+Ensure dataset diversity:
+
+Dimension	Coverage
+Acts	IPC, CrPC, CPC, IT Act, NDPS
+Sections	Definitions + Punishments
+Difficulty	Easy → Medium
+Question Type	Lookup, Explain, Conditional
+
+Target:
+
+3–5 questions per section
+
+Avoid repetitive wording
+
+7️⃣ Final Dataset Output Format
+🔹 Training-Ready JSONL
+{"instruction":"Define theft under IPC","input":"","response":"Section 378 of the Indian Penal Code defines theft as..."}
+{"instruction":"What is the punishment for criminal breach of trust?","input":"","response":"As per Section 406 IPC..."}
+
+🧠 Output of Phase 3
+
+At the end of this phase, you will have:
+
+✅ High-quality legal instruction dataset
+✅ Zero opinionated content
+✅ Fully grounded legal answers
+✅ Ready for fine-tuning or RAG evaluation
