@@ -1,0 +1,139 @@
+📦 Dataset Selected
+
+JSON Bare Acts – by CivicTech-India
+
+This repo already gives you:
+
+Clean JSON
+
+Clear Act → Section → Text structure
+
+Minimal preprocessing needed
+
+Ideal for RAG-first architecture
+
+1️⃣ What’s Inside This Dataset (Reality Check)
+
+Typical files:
+
+ipc.json – Indian Penal Code, 1860
+
+crpc.json – Code of Criminal Procedure, 1973
+
+cpc.json – Civil Procedure Code, 1908
+
+iea.json – Indian Evidence Act, 1872
+
+Others (Motor Vehicles Act, NI Act, etc.)
+
+Sample Structure (Simplified)
+{
+  "section": "420",
+  "title": "Cheating and dishonestly inducing delivery of property",
+  "content": "Whoever cheats and thereby dishonestly induces..."
+}
+
+
+This is already gold for RAG.
+
+2️⃣ How We’ll Use This Dataset (Very Important)
+❌ What we will NOT do
+
+❌ Fine-tune LLM on this text
+
+❌ Dump whole JSON directly into embeddings
+
+❌ Treat each Act as one document
+
+✅ What we WILL do
+
+✅ Normalize schema
+
+✅ Chunk semantically
+
+✅ Add strong metadata
+
+✅ Embed → Vector DB
+
+✅ Cite Act + Section in answers
+
+3️⃣ Target Canonical Schema (Your Internal Format)
+
+Before embeddings, convert everything to ONE format:
+
+{
+  "act": "Indian Penal Code",
+  "year": 1860,
+  "section": "420",
+  "section_title": "Cheating and dishonestly inducing delivery of property",
+  "chunk_id": "IPC_420_01",
+  "text": "Whoever cheats and thereby dishonestly induces...",
+  "source": "CivicTech-India"
+}
+
+
+📌 This schema will stay unchanged across your entire system.
+
+4️⃣ Chunking Strategy (Legal-Safe)
+🔹 Default Rule
+
+1 section = 1 chunk
+
+🔹 Split ONLY IF
+
+Section > ~700 tokens
+
+Multiple illustrations / provisos
+
+🔹 How to split long sections
+
+Keep legal logic intact:
+
+Chunk 1: Main provision
+Chunk 2: Proviso(s)
+Chunk 3: Explanation / Illustration
+
+
+❌ Never split mid-sentence
+❌ Never detach proviso from parent section
+
+5️⃣ Minimal Cleaning Required (Do NOT Overclean)
+✅ Keep
+
+Section numbers
+
+Legal wording
+
+“Provided that…”
+
+Illustrations
+
+❌ Remove
+
+Extra newlines
+
+Unicode junk
+
+Redundant spacing
+
+6️⃣ Output After Phase 2 (Using This Dataset)
+
+After processing CivicTech-India JSONs, you should have:
+
+/legal_corpus/
+ ├── ipc_chunks.json
+ ├── crpc_chunks.json
+ ├── iea_chunks.json
+
+
+Each file = array of clean, labeled chunks.
+
+7️⃣ Why This Dataset Is Perfect for RAG
+
+✔ Official wording
+✔ Deterministic facts
+✔ Small enough to validate
+✔ Expandable later
+✔ Citation-friendly
+
+This is exactly how legal assistants used in courts are built.
