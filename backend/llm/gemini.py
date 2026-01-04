@@ -13,7 +13,7 @@ if not GEMINI_API_KEY:
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Use Gemini Pro
-MODEL_NAME = "gemini-pro"
+MODEL_NAME = "gemini-2.5-flash"
 
 def generate_response(prompt: str) -> str:
     """

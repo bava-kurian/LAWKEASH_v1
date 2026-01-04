@@ -38,11 +38,22 @@ def chat_endpoint(request: ChatRequest):
     context = retrieve_context(request.query)
     
     # 2. Construct Prompt
-    # You can refine this prompt template later
-    prompt = f"""You are an intelligent legal assistant for Indian Law.
-Use the following context to answer the user's question. If the answer is not in the context, use your general knowledge but mention that it is not from the provided source.
+    if "No relevant legal context found" in context:
+        prompt = f"""You are an expert Indian Legal Consultant.
+The user has asked a question regarding Indian Law.
+Please provide a comprehensive answer using your own legal knowledge.
+State clearly that this advice is based on general knowledge as no specific documents were retrieved from the local database.
 
-Context:
+Question: {request.query}
+
+Answer:"""
+    else:
+        prompt = f"""You are an expert Indian Legal Consultant.
+Answer the user's question based primarily on the specific legal context provided below.
+Cite the Acts and Sections explicitly.
+If the context is insufficient, supplement it with your general knowledge but clearly distinguish between what is in the documents and what is not.
+
+Context provided:
 {context}
 
 Question: {request.query}
@@ -64,6 +75,11 @@ Answer:"""
         # Use Gemini
         response_text = gemini_generate(prompt)
         source = "Gemini Pro"
+    
+    
+    # Add Disclaimer
+    disclaimer = "\n\nDisclaimer: This is AI-generated legal advice. Please consult a qualified lawyer for professional advice."
+    response_text += disclaimer
     
     return ChatResponse(
         response=response_text,
