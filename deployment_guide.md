@@ -46,7 +46,7 @@ Follow these steps to deploy **LAWkeash BOT** for free using **Render** (Backend
 
 3.  **Environment Variables**:
     - Scroll down to "Environment Variables" and add:
-        - `Key`: `PYTHON_VERSION` | `Value`: `3.10` (or `3.11`)
+        - `Key`: `PYTHON_VERSION` | `Value`: `3.11.9` (or `3.10.14` - must be full version)
         - `Key`: `GEMINI_API_KEY` | `Value`: `your_actual_api_key_here`
 
 4.  **Deploy**:
