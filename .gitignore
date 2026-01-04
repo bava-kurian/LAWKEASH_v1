@@ -44,7 +44,5 @@ yarn-error.log*
 *.swo
 
 # Project Specific
-*.bin
 *.pickle
 *.sqlite3
-RAG/vector_store/
