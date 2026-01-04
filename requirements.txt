@@ -13,3 +13,5 @@ google-generativeai
 pydantic
 psutil
 einops
+gunicorn
+python-multipart
