@@ -5,8 +5,10 @@ from typing import List, Dict, Any
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Configuration
-DATA_DIR = r"d:\Perosnal Projects\LAWKEASH\Data\Indian-Law-Penal-Code-Json"
-OUTPUT_DIR = r"d:\Perosnal Projects\LAWKEASH\RAG\cleaned_corpus"
+# Configuration
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "Data", "Indian-Law-Penal-Code-Json")
+OUTPUT_DIR = os.path.join(BASE_DIR, "RAG", "cleaned_corpus")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # File to Act Mapping

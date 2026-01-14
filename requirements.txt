@@ -4,6 +4,7 @@ peft
 accelerate
 chromadb
 sentence-transformers
+langchain_text_splitters
 bitsandbytes
 jupyter
 fastapi
