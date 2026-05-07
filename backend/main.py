@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 import uvicorn
 import os
+import time
 
 # Import Service Modules
 from backend.rag_service import retrieve_context
@@ -21,9 +22,32 @@ class ChatResponse(BaseModel):
     context_used: str
     source: str = "Gemini"
 
+class RetrieveRequest(BaseModel):
+    query: str
+
+class RetrieveResponse(BaseModel):
+    chunks: str
+    latency_ms: float
+
 @app.get("/")
 def read_root():
     return {"status": "online", "message": "LAWKEASH AI Backend is running."}
+
+@app.post("/retrieve", response_model=RetrieveResponse)
+def retrieve_endpoint(request: RetrieveRequest):
+    """
+    Endpoint to retrieve chunks for a query and measure latency.
+    """
+    start_time = time.time()
+    context = retrieve_context(request.query)
+    end_time = time.time()
+    
+    latency_ms = round((end_time - start_time) * 1000, 2)
+    
+    return RetrieveResponse(
+        chunks=context,
+        latency_ms=latency_ms
+    )
 
 @app.post("/chat", response_model=ChatResponse)
 def chat_endpoint(request: ChatRequest):

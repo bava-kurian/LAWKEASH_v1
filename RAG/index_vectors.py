@@ -5,8 +5,9 @@ from chromadb.utils import embedding_functions
 from typing import List, Dict, Any
 
 # Configuration
-INPUT_DIR = r"d:\Perosnal Projects\LAWKEASH\RAG\cleaned_corpus"
-DB_DIR = r"d:\Perosnal Projects\LAWKEASH\RAG\vector_store"
+# Configuration
+INPUT_DIR = r"d:\coding_projects\LAWKEASH_v1\RAG\cleaned_corpus"
+DB_DIR = r"d:\coding_projects\LAWKEASH_v1\RAG\vector_store"
 COLLECTION_NAME = "indian_law"
 
 # Ensure DB directory exists
